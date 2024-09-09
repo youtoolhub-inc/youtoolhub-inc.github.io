@@ -32,6 +32,17 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .dark-mode body {
+            background-color: #333;
+            color: #f4f4f4;
+        }
+        .dark-mode .navbar {
+            background-color: #222;
+        }
+        .dark-mode .footer {
+            background-color: #222;
         }
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
@@ -46,6 +57,10 @@
         }
         .navbar {
             margin-bottom: 20px;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         .navbar-brand {
             font-weight: bold;
@@ -100,6 +115,14 @@
             width: 100%;
             bottom: 0;
         }
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ffffff;
+        }
+        .theme-toggle:hover {
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
@@ -107,21 +130,13 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">YouToolHub Inc</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="material-icons">home</i> Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="material-icons">info</i> About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="material-icons">contact_mail</i> Contact</a>
-                </li>
-            </ul>
+        <div class="navbar-nav ml-auto">
+            <a class="nav-link" href="#"><i class="material-icons">home</i> Home</a>
+            <a class="nav-link" href="#"><i class="material-icons">info</i> About</a>
+            <a class="nav-link" href="#"><i class="material-icons">contact_mail</i> Contact</a>
+            <span class="theme-toggle" id="themeToggle">
+                <i class="material-icons">brightness_4</i>
+            </span>
         </div>
     </nav>
 
@@ -172,5 +187,12 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#themeToggle i');
+            icon.textContent = document.body.classList.contains('dark-mode') ? 'brightness_7' : 'brightness_4';
+        });
+    </script>
 </body>
 </html>
