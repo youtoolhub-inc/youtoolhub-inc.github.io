@@ -1,0 +1,64 @@
+name: Delete All Actions
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: 'Repository name in format youtoolhub-inc/youtoolhub-inc.github.io'
+        required: true
+        default: 'youtoolhub-inc/youtoolhub-inc.github.io'
+
+jobs:
+  delete_actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        
+      - name: Delete all workflow runs
+        env:
+          ACTION: ${{ secrets.ACTION }}
+        run: |
+          # Define repository and token from inputs
+          REPO=${{ github.event.inputs.repository }}
+          TOKEN=${{ env.ACTION }}
+
+          # Get all workflow runs
+          RUNS=$(curl -s -H "Authorization: token $TOKEN" \
+            "https://api.github.com/repos/$REPO/actions/runs")
+          
+          # Extract run IDs
+          RUN_IDS=$(echo "$RUNS" | jq -r '.workflow_runs[].id')
+
+          # Delete all workflow runs
+          for RUN_ID in $RUN_IDS; do
+            echo "Deleting workflow run ID: $RUN_ID"
+            curl -s -X DELETE -H "Authorization: token $TOKEN" \
+              "https://api.github.com/repos/$REPO/actions/runs/$RUN_ID"
+          done
+          
+          echo "All workflow runs have been deleted."
+
+      - name: Delete all workflows
+        env:
+          ACTION: ${{ secrets.ACTION }}
+        run: |
+          # Define repository and token from inputs
+          REPO=${{ github.event.inputs.repository }}
+          TOKEN=${{ env.ACTION }}
+
+          # Get all workflows
+          WORKFLOWS=$(curl -s -H "Authorization: token $TOKEN" \
+            "https://api.github.com/repos/$REPO/actions/workflows")
+          
+          # Extract workflow IDs
+          WORKFLOW_IDS=$(echo "$WORKFLOWS" | jq -r '.workflows[].id')
+
+          # Delete all workflows
+          for WORKFLOW_ID in $WORKFLOW_IDS; do
+            echo "Deleting workflow ID: $WORKFLOW_ID"
+            curl -s -X DELETE -H "Authorization: token $TOKEN" \
+              "https://api.github.com/repos/$REPO/actions/workflows/$WORKFLOW_ID"
+          done
+          
+          echo "All workflows have been deleted."
