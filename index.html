@@ -38,6 +38,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            z-index: 1001; /* Ensure navbar is above the sidebar */
         }
         .navbar-brand {
             font-weight: bold;
@@ -104,7 +105,7 @@
             transition: 0.3s;
             overflow-x: hidden;
             padding-top: 60px;
-            z-index: 1000;
+            z-index: 1000; /* Ensure sidebar is above the content */
         }
         .sidebar a {
             padding: 10px 15px;
@@ -131,6 +132,7 @@
             border: none;
             background: none;
             padding: 10px;
+            z-index: 1001; /* Ensure open button is above the sidebar */
         }
         .sidebar.open {
             left: 0;
@@ -138,9 +140,7 @@
         .main-content {
             transition: margin-left 0.3s;
             padding: 16px;
-        }
-        .main-content.shifted {
-            margin-left: 250px;
+            z-index: 1; /* Ensure content is behind the sidebar */
         }
     </style>
 </head>
@@ -212,12 +212,12 @@
     <script>
         document.getElementById('openBtn').addEventListener('click', function() {
             document.getElementById('mySidebar').classList.add('open');
-            document.getElementById('main').classList.add('shifted');
+            document.getElementById('main').style.marginLeft = '250px';
         });
 
         document.getElementById('closeBtn').addEventListener('click', function() {
             document.getElementById('mySidebar').classList.remove('open');
-            document.getElementById('main').classList.remove('shifted');
+            document.getElementById('main').style.marginLeft = '0';
         });
     </script>
 </body>
