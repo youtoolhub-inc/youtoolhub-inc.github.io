@@ -1,50 +1,45 @@
-name: Notify Telegram
+name: Website Update Notification
 
 on:
   push:
+    branches:
+      - main  # Main branch for production updates
     paths:
       - 'index.html'
       - 'images/**'
 
 jobs:
   notify_telegram:
+    name: Send Telegram Notification
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get Date and Time
-        id: date
-        run: echo "current_date=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Get Commit Details
-        id: commit_info
+      - name: Retrieve Commit Details
+        id: commit_details
         run: |
-          echo "commit_title=$(git log -1 --pretty=%s)" >> $GITHUB_ENV
-          echo "commit_description=$(git log -1 --pretty=%B | tail -n +2)" >> $GITHUB_ENV
-          echo "commit_author=$(git log -1 --pretty=%an)" >> $GITHUB_ENV
-          echo "commit_email=$(git log -1 --pretty=%ae)" >> $GITHUB_ENV
+          COMMIT_TITLE=$(git log -1 --pretty=format:'%s')
+          COMMIT_DESCRIPTION=$(git log -1 --pretty=format:'%b' | tr '\n' ' ')
+          echo "commit_title=${COMMIT_TITLE}" >> $GITHUB_OUTPUT
+          echo "commit_description=${COMMIT_DESCRIPTION}" >> $GITHUB_OUTPUT
 
-      - name: Send Telegram Message
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          GITHUB_REPO_URL: "https://github.com/youtoolhub-inc/youtoolhub-inc.github.io"
-          WEBSITE_URL: "https://youtoolhub-inc.github.io/"
-          COMMIT_TITLE: ${{ env.commit_title }}
-          COMMIT_DESCRIPTION: ${{ env.commit_description }}
-        run: |
-          # Formata a mensagem de acordo com o estilo Markdown solicitado
-          MESSAGE="🚀 *Website Update!* 🚀\n"
-          MESSAGE+="🌐 *Visit the repository:* [YouToolHub Repo]($GITHUB_REPO_URL)\n"
-          MESSAGE+="🗒️ *Commit Details:*\n"
-          MESSAGE+="*Commit Title:* $COMMIT_TITLE\n"
-          MESSAGE+="*Commit Description:* $COMMIT_DESCRIPTION\n"
-          MESSAGE+="For more information, visit: [YouToolHub]($WEBSITE_URL)"
+      - name: Send Notification to Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}  # Replace with the correct Telegram channel or group ID
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}  # Your Telegram bot token stored in GitHub Secrets
+          format: markdown
+          message: |
+            🚀 *Website Update!*
 
-          # Substitui os caracteres de nova linha por %0A para o curl entender as quebras de linha
-          PARSED_MESSAGE=$(echo "$MESSAGE" | sed ':a;N;$!ba;s/\n/%0A/g')
+            🌐 Visit the repository: [YouToolHub Repo](https://github.com/youtoolhub-inc/youtoolhub-inc.github.io)
 
-          # Envia a mensagem para o canal no Telegram
-          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
-          -d chat_id="$TELEGRAM_CHAT_ID" \
-          -d text="$PARSED_MESSAGE" \
-          -d parse_mode="Markdown"
+            🗒️ *Commit Details:*
+
+            *Commit Title:* `${{ steps.commit_details.outputs.commit_title }}`
+
+            *Commit Description:* `${{ steps.commit_details.outputs.commit_description }}`
+
+            For more information, visit: [YouToolHub](https://youtoolhub-inc.github.io/)
