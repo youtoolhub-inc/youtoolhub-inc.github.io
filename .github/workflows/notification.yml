@@ -33,15 +33,18 @@ jobs:
           COMMIT_DESCRIPTION: ${{ env.commit_description }}
         run: |
           # Formata a mensagem de acordo com o estilo Markdown solicitado
-          MESSAGE="🚀 *Website Update!* 🚀\n\n"
-          MESSAGE+="🌐 *Visit the repository:* [YouToolHub Repo]($GITHUB_REPO_URL)\n\n"
-          MESSAGE+="🗒️ *Commit Details:*\n\n"
-          MESSAGE+="*Commit Title:* $COMMIT_TITLE\n\n"
-          MESSAGE+="*Commit Description:* $COMMIT_DESCRIPTION\n\n"
+          MESSAGE="🚀 *Website Update!* 🚀\n"
+          MESSAGE+="🌐 *Visit the repository:* [YouToolHub Repo]($GITHUB_REPO_URL)\n"
+          MESSAGE+="🗒️ *Commit Details:*\n"
+          MESSAGE+="*Commit Title:* $COMMIT_TITLE\n"
+          MESSAGE+="*Commit Description:* $COMMIT_DESCRIPTION\n"
           MESSAGE+="For more information, visit: [YouToolHub]($WEBSITE_URL)"
+
+          # Substitui os caracteres de nova linha por %0A para o curl entender as quebras de linha
+          PARSED_MESSAGE=$(echo "$MESSAGE" | sed ':a;N;$!ba;s/\n/%0A/g')
 
           # Envia a mensagem para o canal no Telegram
           curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
           -d chat_id="$TELEGRAM_CHAT_ID" \
-          -d text="$MESSAGE" \
+          -d text="$PARSED_MESSAGE" \
           -d parse_mode="Markdown"
