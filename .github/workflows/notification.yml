@@ -18,7 +18,8 @@ jobs:
       - name: Get Commit Details
         id: commit_info
         run: |
-          echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+          echo "commit_title=$(git log -1 --pretty=%s)" >> $GITHUB_ENV
+          echo "commit_description=$(git log -1 --pretty=%B | tail -n +2)" >> $GITHUB_ENV
           echo "commit_author=$(git log -1 --pretty=%an)" >> $GITHUB_ENV
           echo "commit_email=$(git log -1 --pretty=%ae)" >> $GITHUB_ENV
 
@@ -26,22 +27,18 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          GITHUB_ACTOR: ${{ github.actor }}
-          GITHUB_PROFILE_URL: https://github.com/${{ github.actor }}
-          GITHUB_REPO: ${{ github.repository }}
-          COMMIT_MESSAGE: ${{ env.commit_message }}
-          COMMIT_AUTHOR: ${{ env.commit_author }}
-          COMMIT_EMAIL: ${{ env.commit_email }}
-          UPDATE_TIME: ${{ env.current_date }}
+          GITHUB_REPO_URL: "https://github.com/youtoolhub-inc/youtoolhub-inc.github.io"
+          WEBSITE_URL: "https://youtoolhub-inc.github.io/"
+          COMMIT_TITLE: ${{ env.commit_title }}
+          COMMIT_DESCRIPTION: ${{ env.commit_description }}
         run: |
-          # Mensagem formatada com título, descrição, data/hora, autor e link para o perfil
-          MESSAGE="🚀 *Update on GitHub Repository* 🚀\n\n"
-          MESSAGE+="*Repository:* [${{ env.GITHUB_REPO }}](https://github.com/${{ env.GITHUB_REPO }})\n"
-          MESSAGE+="*File/Directory Updated:* index.html or images/\n"
-          MESSAGE+="*Commit Message:* $COMMIT_MESSAGE\n"
-          MESSAGE+="*Date/Time:* $UPDATE_TIME\n"
-          MESSAGE+="*Updated by:* $COMMIT_AUTHOR ($COMMIT_EMAIL)\n"
-          MESSAGE+="*GitHub Profile:* [${{ env.GITHUB_ACTOR }}]($GITHUB_PROFILE_URL)\n"
+          # Formata a mensagem de acordo com o estilo Markdown solicitado
+          MESSAGE="🚀 *Website Update!* 🚀\n\n"
+          MESSAGE+="🌐 *Visit the repository:* [YouToolHub Repo]($GITHUB_REPO_URL)\n\n"
+          MESSAGE+="🗒️ *Commit Details:*\n\n"
+          MESSAGE+="*Commit Title:* $COMMIT_TITLE\n\n"
+          MESSAGE+="*Commit Description:* $COMMIT_DESCRIPTION\n\n"
+          MESSAGE+="For more information, visit: [YouToolHub]($WEBSITE_URL)"
 
           # Envia a mensagem para o canal no Telegram
           curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
