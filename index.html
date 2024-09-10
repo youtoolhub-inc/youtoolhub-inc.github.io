@@ -27,33 +27,10 @@
     <link rel="stylesheet" href="./assets/styles.css">
     <style>
         body {
-            background-color: #f4f4f4;
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .dark-mode body {
-            background-color: #333;
-            color: #f4f4f4;
-        }
-        .dark-mode .navbar {
-            background-color: #222;
-        }
-        .dark-mode .footer {
-            background-color: #222;
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 5px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
         }
         .navbar {
             margin-bottom: 20px;
@@ -115,61 +92,106 @@
             width: 100%;
             bottom: 0;
         }
-        .theme-toggle {
-            cursor: pointer;
-            font-size: 1.5rem;
+        /* Sidebar */
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            background-color: #343a40;
             color: #ffffff;
+            transition: 0.3s;
+            overflow-x: hidden;
+            padding-top: 60px;
+            z-index: 1000;
         }
-        .theme-toggle:hover {
-            color: #007bff;
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: #ffffff;
+            display: block;
+            transition: 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            color: #ffffff;
+            border: none;
+            background: none;
+            padding: 10px;
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .main-content {
+            transition: margin-left 0.3s;
+            padding: 16px;
+        }
+        .main-content.shifted {
+            margin-left: 250px;
         }
     </style>
 </head>
 <body>
 
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" id="closeBtn">&times;</a>
+        <a href="#"><i class="material-icons">home</i> Home</a>
+        <a href="#"><i class="material-icons">info</i> About</a>
+        <a href="#"><i class="material-icons">contact_mail</i> Contact</a>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="openbtn" id="openBtn">&#9776;</button>
         <a class="navbar-brand" href="#">YouToolHub Inc</a>
-        <div class="navbar-nav ml-auto">
-            <a class="nav-link" href="#"><i class="material-icons">home</i> Home</a>
-            <a class="nav-link" href="#"><i class="material-icons">info</i> About</a>
-            <a class="nav-link" href="#"><i class="material-icons">contact_mail</i> Contact</a>
-            <span class="theme-toggle" id="themeToggle">
-                <i class="material-icons">brightness_4</i>
-            </span>
-        </div>
     </nav>
 
     <!-- Main content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Feature 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Feature 1</h5>
-                        <p class="card-text">Description of feature 1. It's an amazing feature that helps you achieve great results.</p>
-                        <a href="#" class="btn btn-primary">Learn More</a>
+    <div id="main" class="main-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Feature 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Feature 1</h5>
+                            <p class="card-text">Description of feature 1. It's an amazing feature that helps you achieve great results.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Feature 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Feature 2</h5>
-                        <p class="card-text">Description of feature 2. This feature enhances your productivity and efficiency.</p>
-                        <a href="#" class="btn btn-primary">Learn More</a>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Feature 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Feature 2</h5>
+                            <p class="card-text">Description of feature 2. This feature enhances your productivity and efficiency.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/300" class="card-img-top" alt="Feature 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Feature 3</h5>
-                        <p class="card-text">Description of feature 3. Experience the best functionality with this amazing feature.</p>
-                        <a href="#" class="btn btn-primary">Learn More</a>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/300" class="card-img-top" alt="Feature 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Feature 3</h5>
+                            <p class="card-text">Description of feature 3. Experience the best functionality with this amazing feature.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -188,10 +210,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById('themeToggle').addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.querySelector('#themeToggle i');
-            icon.textContent = document.body.classList.contains('dark-mode') ? 'brightness_7' : 'brightness_4';
+        document.getElementById('openBtn').addEventListener('click', function() {
+            document.getElementById('mySidebar').classList.add('open');
+            document.getElementById('main').classList.add('shifted');
+        });
+
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            document.getElementById('mySidebar').classList.remove('open');
+            document.getElementById('main').classList.remove('shifted');
         });
     </script>
 </body>
