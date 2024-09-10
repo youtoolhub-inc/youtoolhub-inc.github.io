@@ -1,0 +1,50 @@
+name: Notify Telegram
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'images/**'
+
+jobs:
+  notify_telegram:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Date and Time
+        id: date
+        run: echo "current_date=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+
+      - name: Get Commit Details
+        id: commit_info
+        run: |
+          echo "commit_message=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+          echo "commit_author=$(git log -1 --pretty=%an)" >> $GITHUB_ENV
+          echo "commit_email=$(git log -1 --pretty=%ae)" >> $GITHUB_ENV
+
+      - name: Send Telegram Message
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_PROFILE_URL: https://github.com/${{ github.actor }}
+          GITHUB_REPO: ${{ github.repository }}
+          COMMIT_MESSAGE: ${{ env.commit_message }}
+          COMMIT_AUTHOR: ${{ env.commit_author }}
+          COMMIT_EMAIL: ${{ env.commit_email }}
+          UPDATE_TIME: ${{ env.current_date }}
+        run: |
+          # Mensagem formatada com título, descrição, data/hora, autor e link para o perfil
+          MESSAGE="🚀 *Update on GitHub Repository* 🚀\n\n"
+          MESSAGE+="*Repository:* [${{ env.GITHUB_REPO }}](https://github.com/${{ env.GITHUB_REPO }})\n"
+          MESSAGE+="*File/Directory Updated:* index.html or images/\n"
+          MESSAGE+="*Commit Message:* $COMMIT_MESSAGE\n"
+          MESSAGE+="*Date/Time:* $UPDATE_TIME\n"
+          MESSAGE+="*Updated by:* $COMMIT_AUTHOR ($COMMIT_EMAIL)\n"
+          MESSAGE+="*GitHub Profile:* [${{ env.GITHUB_ACTOR }}]($GITHUB_PROFILE_URL)\n"
+
+          # Envia a mensagem para o canal no Telegram
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+          -d chat_id="$TELEGRAM_CHAT_ID" \
+          -d text="$MESSAGE" \
+          -d parse_mode="Markdown"
