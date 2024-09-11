@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Tag Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MDUI CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css" rel="stylesheet">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- CSS -->
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body class="mdui-theme-layout-auto">
+
+<div class="container">
+    <h2 class="text-center mb-4">Music Tag Generator</h2>
+    
+    <form id="tagForm">
+        <div class="form-group">
+            <label for="musicGenre">Music Genre:</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="material-icons">category</i></span>
+                </div>
+                <input type="text" class="form-control" id="musicGenre" placeholder="Ex: Pop, Rock, Jazz">
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary mt-4 btn-block" onclick="generateTags()">Generate Tags</button>
+    </form>
+
+    <div class="result hidden" id="resultContainer">
+        <h3>Generated Tags:</h3>
+        <textarea class="form-control" id="result" rows="10" readonly></textarea>
+        <button class="btn btn-info mt-2 btn-block" onclick="copyToClipboard()">Copy Tags</button>
+    </div>
+</div>
+<!-- JS -->
+<script src="./script.js"></script>
+<!-- Bootstrap and MDUI JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"></script>
+
+</body>
+</html>
