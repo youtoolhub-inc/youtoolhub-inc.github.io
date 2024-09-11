@@ -181,31 +181,32 @@
             <div class="row">
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <img src="https://www.shutterstock.com/image-vector/trap-music-logo-design-260nw-1922322272.jpg" class="card-img-top" alt="Feature 1">
+                        <img src="https://www.shutterstock.com/image-vector/trap-music-logo-design-260nw-1922322272.jpg" class="card-img-top" alt="Music Description Generator">
                         <div class="card-body">
                             <h5 class="card-title">Music Description Generator</h5>
                             <p class="card-text">Generate Description for Your Songs.</p>
-                            <a href="./tools/description generator/index.html" class="btn btn-primary">Learn More</a>
+                            <a href="./tools/description generator" class="btn btn-primary">Learn More</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZWhkB3wH4ujgguMDPoR5GFhSp-RpPePg5wQ&s" class="card-img-top" alt="Feature 2">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZWhkB3wH4ujgguMDPoR5GFhSp-RpPePg5wQ&s" class="card-img-top" alt="FreeMusicDistrib">
                         <div class="card-body">
                             <h5 class="card-title">FreeMusicDistrib</h5>
                             <p class="card-text">FreeMusicDistribution Platform Offers Global Reach.</p>
-                            <a href="freemusicdistrib.com" class="btn btn-primary">Learn More</a>
+                            <a href="https://freemusicdistrib.com" class="btn btn-primary">Learn More</a>
                         </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
-                              <img src="https://thumbs.dreamstime.com/b/doodle-da-m%C3%BAsica-22805291.jpg" class="card-img-top" alt="Feature 2">
-                              <div class="card-body">
-                                 <h5 class="card-title">Music Tag Generator</h5>
-                                 <p class="card-text">Music Genre Tag Generator is a powerful tool designed to generate up to 500 relevant tags based on a selected music genre.</p>
-                                 <a href="./tools/Music_Tag_Generator/index.html" class="btn btn-primary">Learn More</a>
-                             </div>
-                         </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="https://thumbs.dreamstime.com/b/doodle-da-m%C3%BAsica-22805291.jpg" class="card-img-top" alt="Music Tag Generator">
+                        <div class="card-body">
+                            <h5 class="card-title">Music Tag Generator</h5>
+                            <p class="card-text">Music Genre Tag Generator is a powerful tool designed to generate up to 500 relevant tags based on a selected music genre.</p>
+                            <a href="./tools/Music_Tag_Generator" class="btn btn-primary">Learn More</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -224,15 +225,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById('openBtn').addEventListener('click', function() {
-            document.getElementById('mySidebar').classList.toggle('open');
-            document.getElementById('main').classList.toggle('shifted');
-        });
-
-        document.getElementById('closeBtn').addEventListener('click', function() {
-            document.getElementById('mySidebar').classList.remove('open');
-            document.getElementById('main').classList.remove('shifted');
-        });
+        // Sidebar toggle
+        document.getElementById("openBtn").onclick = function() {
+            document.getElementById("mySidebar").classList.add("open");
+            document.getElementById("main").classList.add("shifted");
+        };
+        document.getElementById("closeBtn").onclick = function() {
+            document.getElementById("mySidebar").classList.remove("open");
+            document.getElementById("main").classList.remove("shifted");
+        };
     </script>
 </body>
 </html>
